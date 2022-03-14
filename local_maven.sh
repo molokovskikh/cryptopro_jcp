@@ -81,8 +81,8 @@ install_jar()
  test -z "${GROUP_ID}" && GROUP_ID=${JCP_GROUPID}
  test -z "${ARTIFACT_ID}" && ARTIFACT_ID=${JCP_ARTIFACTID}
  test -z "${VERSION}" && VERSION=${JCP_VERSION}
- #maven ${JAR_FILE} ${GROUP_ID} ${ARTIFACT_ID} ${VERSION}
- nexus ${JAR_FILE} ${GROUP_ID} ${ARTIFACT_ID} ${VERSION}
+ test -f ${JAR_FILE}  && maven ${JAR_FILE} ${GROUP_ID} ${ARTIFACT_ID} ${VERSION}
+ test -f ${JAR_FILE} && nexus ${JAR_FILE} ${GROUP_ID} ${ARTIFACT_ID} ${VERSION}
  test -n "${GRADLE_FILE}" && echo -e "\nimplementation '${GROUP_ID}:${ARTIFACT_ID}:${VERSION}'" >> ${GRADLE_FILE}
  test -n "${POM_FILE}" && echo -e "\n\t<dependency>\n\t\t<groupId>${GROUP_ID}</groupId>\n\t\t<artifactId>${ARTIFACT_ID}</artifactId>\n\t\t<version>${VERSION}</version>\n\t</dependency>\n" >> ${POM_FILE}
 }
@@ -133,7 +133,7 @@ post()
  test -n "${POM_FILE}" && echo -e "\n</dependencies>\n" >> ${POM_FILE}
  test -n "${GRADLE_FILE}" && cat ${GRADLE_FILE}
  test -n "${POM_FILE}" && cat ${POM_FILE}
- cat ${SETTINGS_XML} 
+ #cat ${SETTINGS_XML} 
  rm -rf ${SETTINGS_XML}
  rm -rf ${JARS_PATH}
 }
